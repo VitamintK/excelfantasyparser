@@ -126,7 +126,7 @@ yahoo ="""1. Kevin Durant
     125. Brandon Knight
     126. Maurice Harkless
     127. Shawn Marion
-    128. Lou Williams
+    128. Louis Williams
     129. Anthony Bennett
     130. Cody Zeller
     131. Otto Porter Jr.
@@ -148,7 +148,57 @@ yahoo ="""1. Kevin Durant
     147. Randy Foye
     148. Tony Allen
     149. Lance Stephenson
-    150. Kentavious Caldwell-Pope"""
+    150. Kentavious Caldwell-Pope
+    151. Nerlens Noel
+152. Carlos Delfino
+153. Tayshaun Prince
+154. Chase Budinger
+155. Luis Scola
+156. Isaiah Thomas
+157. Jason Terry
+158. Elton Brand
+159. Trevor Ariza
+160. Jarrett Jack
+161. Danilo Gallinari
+162. Vince Carter
+163. Thabo Sefolosha
+164. Martell Webster
+165. Matt Barnes
+166. Mo Williams
+167. Darren Collison
+168. Metta World Peace
+169. Al-Farouq Aminu
+170. J.J. Hickson
+171. Nate Robinson
+172. Kosta Koufos
+173. Dorell Wright
+174. Patrick Patterson
+175. Mike Dunleavy
+176. Luke Ridnour
+177. Glen Davis
+178. Hedo Turkoglu
+179. Channing Frye
+180. Brandon Bass
+181. Brandon Rush
+182. Courtney Lee
+183. Kirk Hinrich
+184. Andre Miller
+185. Devin Harris
+186. Alonzo Gee
+187. Jason Thompson
+188. Carl Landry
+189. Shane Battier
+190. Corey Brewer
+191. Ed Davis
+192. Caron Butler
+193. Dante Cunningham
+194. Markieff Morris
+195. Jodie Meeks
+196. Antawn Jamison
+197. Brandan Wright
+198. Nick Collison
+199. Andray Blatche
+200. Steve Novak"""
 
 espn = """Kevin Durant, OKC SF [Recent News] 
 LeBron James, Mia SF
@@ -265,7 +315,7 @@ Gerald Henderson, Cha SG [Recent News]
 Andrei Kirilenko*, Bkn SF  O [Breaking News] 
 Kevin Martin, Min SG  DTD [Breaking News] 
 Jarrett Jack*, Cle PG  O [Recent News] 
-Jarrett Jack*, Cle PG  O [Recent News] 
+Enes Kanter, Uta C
 Danilo Gallinari*, Den SF, PF  O
 Nate Robinson, Den PG, SG  DTD [Breaking News] 
 DeMar DeRozan, Tor SG
@@ -309,30 +359,93 @@ Steve Blake, LAL PG [Recent News]
 Mo Williams, Por PG, SG
 Trevor Ariza, Wsh SF
 Caron Butler, Mil SF
-Matt Barnes, LAC SF  DTD [Breaking News]"""
+Matt Barnes, LAC SF  DTD [Breaking News]
+Brandon Bass, Bos PF
+Mike Miller, Mem SF, SG [Recent News] 
+Randy Foye, Den SG, PG
+Al-Farouq Aminu, Nor SF [Recent News] 
+Tony Allen, Mem SG
+Dorell Wright, Por SF [Recent News] 
+Jared Dudley, LAC SF, SG
+Jason Terry, Bkn SG [Recent News] 
+Chauncey Billups, Det PG  DTD [Breaking News] 
+DeAndre Jordan, LAC C
+Jason Thompson, Sac PF, C
+Corey Brewer, Min SF
+Taj Gibson, Chi PF
+MarShon Brooks, Bos SG [Recent News] 
+Devin Harris*, Dal PG, SG  O
+Avery Bradley, Bos SG
+Kentavious Caldwell-Pope, Det SG
+Luke Ridnour, Mil PG
+Robin Lopez, Por C [Breaking News] 
+Kyle Korver, Atl SG [Recent News] 
+Jason Richardson*, Phi SG  O
+Kirk Hinrich*, Chi SG  O [Breaking News] 
+Samuel Dalembert, Dal C [Recent News] 
+Courtney Lee, Bos SG
+Chase Budinger*, Min SF  O
+Darren Collison, LAC PG [Recent News] 
+Rodney Stuckey*, Det SG  O
+Wesley Johnson, LAL SF, SG [Breaking News] 
+C.J. Miles, Cle SF  DTD [Breaking News] 
+Luis Scola, Ind PF [Recent News] 
+Thomas Robinson, Por PF [Breaking News] 
+Bismack Biyombo, Cha C
+John Henson, Mil PF [Recent News] 
+Reggie Evans, Bkn PF
+Jordan Hill, LAL PF, C
+Carl Landry*, Sac PF  O
+Byron Mullens, LAC PF, C
+Marcus Thornton, Sac SG
+Lance Stephenson, Ind SG [Recent News] 
+Tayshaun Prince, Mem SF  DTD"""
 
 def alphanumeric(word):
     """cleans everything except letters and numbers and commas and single quotes."""
     return re.sub(r'[^a-zA-Z0-9,\']', '', word)
 
-aggregate = {}
-yahooranks = []
-i=0
-for line in yahoo.split('\n'):
-    i+=1
-    aggregate[alphanumeric(line.split('.',1)[1])] = i
+def addrankstoyahoo(num):
+    for i in stuff.split('\n'):
+        print str(num+int(i.split('.',1)[0].strip())) + '.' + i.split('.',1)[1]
 
-i=0
-for line in espn.split('\n'):
-    i+=1
-    try:
-        yahooranks.append(aggregate[alphanumeric(line.split(',')[0])])
-    except:
-        yahooranks.append(0)
-        #print alphanumeric(line.split(',')[0])
-        print i
-    
-#for i in yahooranks: print i
-for i in range(0,160):
-    if i not in yahooranks:
-        print i
+class ranker():
+    aggregate = {}
+    yahooranks = []
+    def get_yahoo_ranks_from_espn(self,yahoo,espn):
+        """in a spreadsheet, sort the players top to bottom from best espn
+        ranked played (durant) on top, to the bottom. (for example, tayshaun
+        prince at 200.) then run this function and take the output and paste
+        it in a column.  This column will accurately give the yahoo rankings
+        for each player.  The players who are on the ESPN list but not on the
+        Yahoo list will be given a 0 for ranking.  The players who are on the
+        ESPN list but not the Yahoo list will have their rankings placed at
+        the end of the output."""
+        
+        i=0
+        for line in yahoo.split('\n'):
+            i+=1
+            self.aggregate[alphanumeric(line.split('.',1)[1])] = i
+
+        i=0
+        for line in espn.split('\n'):
+            i+=1
+            try:
+                self.yahooranks.append(self.aggregate[alphanumeric(line.split(',')[0])])
+            except:
+                self.yahooranks.append(0)
+                """The players who are on the ESPN list
+                but not on the Yahoo list will be given a 0 for ranking."""
+                
+                #print alphanumeric(line.split(',')[0])
+                #print i
+            
+        for i in self.yahooranks: pass#print i
+        for i in range(0,200):
+            """this prints the ranks for all players in Yahoo rankings but
+            not in ESPN"""
+            if i not in self.yahooranks:
+                #print i
+                pass
+
+#ranker().get_yahoo_ranks_from_espn(yahoo,espn)
